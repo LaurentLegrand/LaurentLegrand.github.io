@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Bass | My Blog]]></title>
+  <link href="http://laurentlegrand.github.io/blog/categories/bass/atom.xml" rel="self"/>
+  <link href="http://laurentlegrand.github.io/"/>
+  <updated>2014-07-02T22:05:32+02:00</updated>
+  <id>http://laurentlegrand.github.io/</id>
+  <author>
+    <name><![CDATA[Laurent Legrand]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[A Bass Fretboard]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2014/01/05/a-bass-fretboard/"/>
+    <updated>2014-01-05T10:49:46+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2014/01/05/a-bass-fretboard</id>
+    <content type="html"><![CDATA[<p>A bass fretboard for beginners.</p>
+
+<p><img class="center" src="/resources/2014-01-05-a-bass-fretboard/BassFretboard.png" title="Bass Fretboard" ></p>
+
+<p>A pdf version is available <a href="/resources/2014-01-05-a-bass-fretboard/BassFretboard.pdf" title="">here</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

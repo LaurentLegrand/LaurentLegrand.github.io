@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: D3js | My Blog]]></title>
+  <link href="http://laurentlegrand.github.io/blog/categories/d3js/atom.xml" rel="self"/>
+  <link href="http://laurentlegrand.github.io/"/>
+  <updated>2014-07-02T22:05:32+02:00</updated>
+  <id>http://laurentlegrand.github.io/</id>
+  <author>
+    <name><![CDATA[Laurent Legrand]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Music Scales With d3.js]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2014/01/07/music-scales-with-d3js/"/>
+    <updated>2014-01-07T22:02:19+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2014/01/07/music-scales-with-d3js</id>
+    <content type="html"><![CDATA[<p>This post is a small example that uses <a href="http://d3js.org/">d3.js</a> to dynamically shows different music scales.</p>
+
+<!--more-->
+
+
+<p>The following buttons allow you to switch from a music scale to the other and to rotate the notes.</p>
+
+<p><link rel="stylesheet" type="text/css" href="//style.css"></p>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+
+
+<div id="d3js">
+    <button id="chromatic">chromatic scale</button>
+    <button id="major">major scale</button>
+    <button id="naturalMinor">natural minor scale</button>
+    <button id="harmonicMinor">harmonic minor scale</button>
+    <button id="rotate">rotate</button>
+</div>
+
+
+
+
+<script type="text/javascript" src="//scales.js"></script>
+
+
+<h2>Some words about the implementation</h2>
+
+<p>The javascript is mainly inspired by the <a href="http://bl.ocks.org/mbostock/3887193">Donut Chart</a> example.</p>
+
+<p>The graphics is composed of 12 SVG groups; one per note. Each SVG group is composed of an arc and a text.</p>
+
+<p><a href="https://github.com/mbostock/d3/wiki/Ordinal-Scales">Ordinals</a> are used to store data:</p>
+
+<ul>
+<li>one containing the <a href="https://github.com/mbostock/d3/wiki/Ordinal-Scales#wiki-category20">colors</a> that are used to fill the arcs</li>
+<li>one containing the notes that are used to set the text contents
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Notes </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">notes</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">ordinal</span><span class="p">().</span><span class="nx">range</span><span class="p">([</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">A</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">A</span><span class="err">#</span><span class="o">/</span><span class="nx">Bb</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">B</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">C</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">C</span><span class="err">#</span><span class="o">/</span><span class="nx">Db</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">D</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">E</span><span class="err">#</span><span class="o">/</span><span class="nx">Eb</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">E</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">F</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">F</span><span class="err">#</span><span class="o">/</span><span class="nx">Gb</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">G</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">G</span><span class="err">#</span><span class="o">/</span><span class="nx">Ab</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;</span> <span class="p">]);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></li>
+<li>one for each music scale; they are used to change the opacity of each SVG group
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>The Major Scale </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">major</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">ordinal</span><span class="p">().</span><span class="nx">range</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></li>
+</ul>
+
+
+<p>When the reset button is clicked, an offset is incremented and the color and the text of each SVG group are changed:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Rotate button listener </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="err">#</span><span class="nx">rotate</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;).</span><span class="nx">on</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">click</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">offset</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.note &amp;gt; path&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">color</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="nx">offset</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.note &amp;gt; text&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">notes</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="nx">offset</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>When one of the scale button is clicked, the opacity of each SVG group is changed based on the ordinal of the selected scale.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Major Scale button listener </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="err">#</span><span class="nx">major</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;).</span><span class="nx">on</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">click</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.note&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+</span><span class='line'><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;opacity&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">major</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+</feed>

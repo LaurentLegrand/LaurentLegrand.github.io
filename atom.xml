@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[My Blog]]></title>
+  <link href="http://laurentlegrand.github.io/atom.xml" rel="self"/>
+  <link href="http://laurentlegrand.github.io/"/>
+  <updated>2014-07-02T22:05:32+02:00</updated>
+  <id>http://laurentlegrand.github.io/</id>
+  <author>
+    <name><![CDATA[Laurent Legrand]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress on Raspberry Pi]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi/"/>
+    <updated>2014-07-02T21:36:07+02:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi</id>
+    <content type="html"><![CDATA[<p>I <em>moved</em> my blog sources to a raspberry pi running Linux raspberrypi 3.10.25+</p>
+
+<p>I&rsquo;ve faced the following issues:</p>
+
+<ul>
+<li><p>During <code>bundle install</code>: An error occured while installing RedCloth (4.2.9)</p>
+
+<p>  Solved by this answer <a href="http://stackoverflow.com/a/14353864">http://stackoverflow.com/a/14353864</a></p></li>
+<li><p>Then problem with pygments_code like in <a href="http://stackoverflow.com/questions/16517144/why-the-pygments-code-rb-plugin-is-breaking">http://stackoverflow.com/questions/16517144/why-the-pygments-code-rb-plugin-is-breaking</a></p>
+
+<p>  Solved by deleting <code>.pygments_cache</code> folder: <a href="https://github.com/imathis/octopress/issues/1427">https://github.com/imathis/octopress/issues/1427</a></p></li>
+<li><p>Then gist redirect by github</p>
+
+<p>  Solved by updating <code>plugins/gist_tab.rb</code></p></li>
+</ul>
+
+
+<p>The site generation is rather slow but it works!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Overriding Templates With XTend]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend/"/>
+    <updated>2014-01-13T22:30:53+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend</id>
+    <content type="html"><![CDATA[<p>On some project, I generate code from EMF models. And I&rsquo;ve been faced to the following issue:
+overriding a template for classes in different EMF meta-models which are in separated Eclipse plug-ins.</p>
+
+<p>It was similar to the following example: the template <code>Foo</code>
+which needs to be override for each class in that class hierarchy (colors correspond to different Eclipse plug-ins)</p>
+
+<p><img src="http://yuml.me/diagram/scruffy/class/[a.A{bg:blue}]^-[a.A_1{bg:blue}], [a.A]^-[a.A_2{bg:blue}], [a.A_1]^-[b.B{bg:orange}], [a.A_2]^-[c.C{bg:green}], [b.B]^-[b.B_1{bg:orange}], [b.B]^-[b.B_2{bg:orange}], [c.C]^-[c.C_1{bg:green}], [c.C]^-[c.C_2{bg:green}]"></img></p>
+
+<!--more-->
+
+
+<h2>First try: multiple dispatch</h2>
+
+<p>With Xtend, a classical approach is to use the multiple dispatch feature:</p>
+
+<figure class='code'><figcaption><span>Multiple Dispatch </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kd">class</span> <span class="nc">Foo</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">A</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;a.A&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">A_1</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;a.A_1&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="n">B</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;b.B&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo</span><span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="n">C</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;c.C&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// and so on</span>
+</span><span class='line'>  
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It works fine but all template specializations have to be declared in the same Xtend class. And it might not be possible.
+For instance, in the example, we would have created an additional Eclipse plug-in containing all templates.</p>
+
+<h2>Second try: Eclipse extension point / extensions</h2>
+
+<p>As I want to group template specializations per Eclipse plug-in, I looked at the extension point / extensions mechanism.</p>
+
+<p>For the example, I would have declared:</p>
+
+<ul>
+<li>an extension point for the root template declared in plug-in <code>a</code></li>
+<li>an extension for classes from package <code>b</code> declared in plug-in <code>b</code></li>
+<li>an extension for classes from package <code>c</code> declared in plug-in <code>c</code></li>
+</ul>
+
+
+<p>It would work but it is quite tedious: tons of XML and lots of plumbing code; not manageable if you have several templates to override.</p>
+
+<h2>Final try: a combination of lambda expression and multiple dispatch</h2>
+
+<p>Since the previous attempts have some drawbacks, I&rsquo;ve defined the following technique which combines lambda expressions and multiple dispatch
+with the help of two small classes.</p>
+
+<h3>First helper class: <code>Transformer</code></h3>
+
+<p>First, I have declare the class <code>Transformer</code> that transforms an object instance into another one:</p>
+
+<figure class='code'><figcaption><span>Transformer</span><a href='https://raw.github.com/LaurentLegrand/ollabaca-on/master/org.ollabaca.on.site/src/org/ollabaca/on/site/util/Transformer.xtend'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kd">class</span> <span class="nc">Transformer</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.SortedMap</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.TreeMap</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Transformer</span><span class="o">&lt;</span><span class="n">I</span><span class="o">,</span> <span class="n">O</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">val</span> <span class="o">(</span><span class="n">I</span><span class="o">)=&gt;</span><span class="n">O</span> <span class="n">fallback</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">val</span> <span class="n">SortedMap</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">I</span><span class="o">&gt;,</span> <span class="o">(</span><span class="n">I</span><span class="o">)=&gt;</span><span class="n">O</span><span class="o">&gt;</span> <span class="n">transformers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeMap</span><span class="o">(</span>
+</span><span class='line'>      <span class="o">[</span> <span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">I</span><span class="o">&gt;</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span> <span class="o">|</span> <span class="c1">// most specific class, first</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">return</span> <span class="mi">0</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">isAssignableFrom</span><span class="o">(</span><span class="n">b</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">return</span> <span class="mi">1</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>          <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>      <span class="o">])</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">new</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="n">fallback</span> <span class="o">=</span> <span class="kc">null</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">new</span><span class="o">((</span><span class="n">I</span><span class="o">)=&gt;</span><span class="n">O</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="n">fallback</span> <span class="o">=</span> <span class="n">fallback</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">def</span> <span class="nf">register</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">I</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">,</span> <span class="o">(</span><span class="n">I</span><span class="o">)=&gt;</span><span class="n">O</span> <span class="n">transformer</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">transformers</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">transformer</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">def</span> <span class="n">O</span> <span class="nf">transform</span><span class="o">(</span><span class="n">I</span> <span class="n">self</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">for</span> <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">transformers</span><span class="o">.</span><span class="n">entrySet</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">isInstance</span><span class="o">(</span><span class="n">self</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>                  <span class="n">val</span> <span class="n">o</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">apply</span><span class="o">(</span><span class="n">self</span><span class="o">)</span>
+</span><span class='line'>                  <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                      <span class="k">return</span> <span class="n">o</span>
+</span><span class='line'>                  <span class="o">}</span>
+</span><span class='line'>              <span class="o">}</span>
+</span><span class='line'>          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IllegalArgumentException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              <span class="n">ex</span><span class="o">.</span><span class="n">printStackTrace</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="n">self</span><span class="o">.</span><span class="n">doFallback</span>
+</span><span class='line'>      <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IllegalArgumentException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">ex</span><span class="o">.</span><span class="n">printStackTrace</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kc">null</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">protected</span> <span class="kd">def</span> <span class="n">O</span> <span class="nf">doFallback</span><span class="o">(</span><span class="n">I</span> <span class="n">self</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="n">fallback</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">apply</span><span class="o">(</span><span class="n">self</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>It contains the following members:</p>
+
+<ul>
+<li><code>transfomers</code>: a map of lambda expressions to which a <code>Transformer</code> instance delegates the transformation</li>
+<li><code>fallback</code>: a fallback lambda expression if no transformer is found; <code>doFallback</code> could also be override instead</li>
+<li><code>register</code> an helper method used to register a transformer lambda expression;
+ the first parameter of that method corresponds to the root class that the lambda expression is able to transform</li>
+<li><code>transform</code>: the method that does the transformation</li>
+</ul>
+
+
+<h3>Second helper class: <code>Template</code></h3>
+
+<p>The second helper class is the class <code>Template</code> which specializes the class <code>Transformer</code> by trasforming into a <code>CharSequence</code>.</p>
+
+<figure class='code'><figcaption><span>Template</span><a href='https://raw.github.com/LaurentLegrand/ollabaca-on/master/org.ollabaca.on.site/src/org/ollabaca/on/site/util/Template.xtend'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kd">class</span> <span class="nc">Template</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="n">Transformer</span><span class="o">&lt;</span><span class="n">E</span><span class="o">,</span> <span class="n">CharSequence</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">new</span><span class="o">()</span> <span class="o">{</span> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">new</span><span class="o">((</span><span class="n">E</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">CharSequence</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="kd">super</span><span class="o">(</span><span class="n">fallback</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Some conventions and that&rsquo;s it</h3>
+
+<p>Finally, when I need a template, I</p>
+
+<ul>
+<li>declare a singleton class which extends <code>Template</code></li>
+<li>declare dispatch <code>doFallback</code> methods for each class in the root package</li>
+<li>declare an helper method with this convention <code>&lt;template-name&gt;_&lt;root-class-name&gt;</code></li>
+</ul>
+
+
+<p>For instance, the template <code>Foo</code> would be:</p>
+
+<figure class='code'><figcaption><span>Foo </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kn">package</span> <span class="n">a</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Foo</span> <span class="kd">extends</span> <span class="n">Template</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="n">val</span> <span class="n">Foo</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Foo</span><span class="o">()</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// the helper method</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="nf">foo_A</span><span class="o">(</span><span class="n">A</span> <span class="n">self</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">instance</span><span class="o">.</span><span class="n">transform</span><span class="o">(</span><span class="n">self</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// the fallback methods</span>
+</span><span class='line'>  <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">doFallback</span><span class="o">(</span><span class="n">A</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;a.A&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">doFallback</span><span class="o">(</span><span class="n">A_1</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;a.A_1&#39;&#39;&#39;</span>
+</span><span class='line'>      
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then, if I need to override the default templates in another Eclipse plug-in, I</p>
+
+<ul>
+<li>declare a class with the same name as the helper class in the root template</li>
+<li>declare a <code>register</code> method that registers to the root template</li>
+<li>declare dispatch methods for each template to override; these methods must have the same signature than the <code>transform</code> method</li>
+</ul>
+
+
+<p>For instance, the extension of <code>Foo</code> in Eclipse plug-in <code>b</code> would be:</p>
+
+<figure class='code'><figcaption><span>Foo </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kn">package</span> <span class="n">b</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Foo_A</span> <span class="o">{</span> <span class="c1">// no need to extend anything!</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="nf">register</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">a</span><span class="o">.</span><span class="nl">Foo:</span><span class="o">:</span><span class="n">instance</span><span class="o">.</span><span class="n">register</span><span class="o">(</span><span class="n">typeof</span><span class="o">(</span><span class="n">b</span><span class="o">),</span> <span class="o">[</span><span class="n">foo_A</span><span class="o">])</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// useless but mandatory</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo_A</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">A</span> <span class="n">self</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo_A</span><span class="o">(</span><span class="n">B</span> <span class="n">self</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;b.B&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo_A</span><span class="o">(</span><span class="n">B_1</span> <span class="n">self</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;b.B_1&#39;&#39;&#39;</span>
+</span><span class='line'>      
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Last words</h2>
+
+<p>With that technique, overriding templates is quite easy.
+The only constraint is to respect the signature of the lambda expression required by the <code>Transformer</code> class.
+Furthermore, you are free to organize your template extensions the way you want.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How I Organize Post Resources]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources/"/>
+    <updated>2014-01-09T23:08:45+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources</id>
+    <content type="html"><![CDATA[<p>When a post uses additional resources (images, javascript, pdf), I put them
+in a directory with the same name as the post filename but without the file extension.</p>
+
+<p>For instance, for the current post, <code>2014-01-09-how-i-organize-post-resources</code>, resources
+would be in the directory <code>resources/2014-01-09-how-i-organize-post-resources</code>.</p>
+
+<p>In order to <em>industrialize</em> the creation of the resource directory, I&rsquo;ve changed
+the <code>new_post</code> task in the <code>Rakefile</code> in order to</p>
+
+<ul>
+<li>create the resource directory</li>
+<li>add the variable <code>resources</code> in the <a href="http://jekyllrb.com/docs/frontmatter/">front-matter</a> of the new post</li>
+</ul>
+
+
+<p>At the end, in a post, I just have to use the variables <code>site_url</code> and <code>page.resources</code> to
+reference a resource.</p>
+
+<p>For instance, a link to the file <code>test.pdf</code> would be written <code>{{ root_url }}/{{ page.resources }}/test.pdf</code>.</p>
+
+<p>And would be rendered <code>/resources/2014-01-09-how-i-organize-post-resources/test.pdf</code>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Music Scales With d3.js]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2014/01/07/music-scales-with-d3js/"/>
+    <updated>2014-01-07T22:02:19+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2014/01/07/music-scales-with-d3js</id>
+    <content type="html"><![CDATA[<p>This post is a small example that uses <a href="http://d3js.org/">d3.js</a> to dynamically shows different music scales.</p>
+
+<!--more-->
+
+
+<p>The following buttons allow you to switch from a music scale to the other and to rotate the notes.</p>
+
+<p><link rel="stylesheet" type="text/css" href="http://laurentlegrand.github.io/resources/2014-01-07-music-scales-with-d3js/style.css"></p>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+
+
+<div id="d3js">
+    <button id="chromatic">chromatic scale</button>
+    <button id="major">major scale</button>
+    <button id="naturalMinor">natural minor scale</button>
+    <button id="harmonicMinor">harmonic minor scale</button>
+    <button id="rotate">rotate</button>
+</div>
+
+
+
+
+<script type="text/javascript" src="http://laurentlegrand.github.io/resources/2014-01-07-music-scales-with-d3js/scales.js"></script>
+
+
+<h2>Some words about the implementation</h2>
+
+<p>The javascript is mainly inspired by the <a href="http://bl.ocks.org/mbostock/3887193">Donut Chart</a> example.</p>
+
+<p>The graphics is composed of 12 SVG groups; one per note. Each SVG group is composed of an arc and a text.</p>
+
+<p><a href="https://github.com/mbostock/d3/wiki/Ordinal-Scales">Ordinals</a> are used to store data:</p>
+
+<ul>
+<li>one containing the <a href="https://github.com/mbostock/d3/wiki/Ordinal-Scales#wiki-category20">colors</a> that are used to fill the arcs</li>
+<li>one containing the notes that are used to set the text contents</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Notes </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">notes</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">ordinal</span><span class="p">().</span><span class="nx">range</span><span class="p">([</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A#/Bb&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;C#/Db&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;E#/Eb&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;F#/Gb&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;G#/Ab&quot;</span> <span class="p">]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>one for each music scale; they are used to change the opacity of each SVG group</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>The Major Scale </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">major</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">ordinal</span><span class="p">().</span><span class="nx">range</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When the reset button is clicked, an offset is incremented and the color and the text of each SVG group are changed:</p>
+
+<figure class='code'><figcaption><span>Rotate button listener </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;#rotate&quot;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">offset</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.note &gt; path&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;fill&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nx">color</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="nx">offset</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.note &gt; text&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+</span><span class='line'>        <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nx">notes</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="nx">offset</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When one of the scale button is clicked, the opacity of each SVG group is changed based on the ordinal of the selected scale.</p>
+
+<figure class='code'><figcaption><span>Major Scale button listener </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;#major&quot;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.note&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;opacity&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">major</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A Bass Fretboard]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2014/01/05/a-bass-fretboard/"/>
+    <updated>2014-01-05T10:49:46+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2014/01/05/a-bass-fretboard</id>
+    <content type="html"><![CDATA[<p>A bass fretboard for beginners.</p>
+
+<p><img class="center" src="http://laurentlegrand.github.io/resources/2014-01-05-a-bass-fretboard/BassFretboard.png" title="Bass Fretboard" ></p>
+
+<p>A pdf version is available <a href="http://laurentlegrand.github.io/resources/2014-01-05-a-bass-fretboard/BassFretboard.pdf" title="">here</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Customizing UML With XCore]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/"/>
+    <updated>2013-12-17T22:00:30+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore</id>
+    <content type="html"><![CDATA[<p>With the latest version of <a href="http://wiki.eclipse.org/Xcore">XCore</a> (EMF 2.9.1 and XCore 1.0), it is now possible to easily customize the UML meta-model.</p>
+
+<!--more-->
+
+
+<p>As shown in the code below, we just have to import classes from the UML meta-model and declare new classes that extend them.</p>
+
+<figure class='code'><figcaption><span>book.xcore</span><a href='https://github.com/LaurentLegrand/ollabaca-on/blob/master/org.ollabaca.on.uml/model/book.xcore'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.PackageableElement</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.Element</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.Node</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.ExecutionEnvironment</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">BookElement</span> <span class="kd">extends</span> <span class="n">PackageableElement</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">refers</span> <span class="n">Element</span> <span class="n">documentation</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Book</span> <span class="kd">extends</span> <span class="n">BookElement</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">contains</span> <span class="n">Part</span><span class="o">[]</span> <span class="n">parts</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// ...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Why using this technique instead of UML Profile?</h2>
+
+<p>Even though the UML Profiles technique is qualified as <em>lightweight</em> in this
+<a href="http://www.eclipse.org/modeling/mdt/uml2/docs/articles/Customizing_UML2_Which_Technique_is_Right_For_You/article.html">article</a>,
+UML Profiles has some major drawbacks:</p>
+
+<ol>
+<li>Before modeling, the end-user has to understand the concepts in the UML meta-model and then the concepts declared in the UML Profile.</li>
+<li>During modeling, the end-user has to instantiate a UML meta-class and then to apply a stereotype on that instance; quite tedious process and not very intuitive.</li>
+<li>It is even worse for the one that defines the UML Profile and develops tools based on it:
+he has to jump between stereotypes and UML meta-classes, he cannot get a consistent view on stereotyped instances.</li>
+</ol>
+
+
+<p>We don&rsquo;t have these drawbacks with the XCore technique. But it introduces other issues / limitations:</p>
+
+<ul>
+<li>It is probably not compatible with UML drawing tools.</li>
+<li>The implementation classes generated by EMF extend UML implementation classes which are <em>private</em> in the UML bundle; it is just a warning but it works.</li>
+</ul>
+
+
+<h2>Why Keep UML?</h2>
+
+<p>Often, when we start modeling a DSL, we don&rsquo;t think that you need UML;
+it is rather the opposite: we want to get rid of UML.
+But on the long run, when the DSL evolves, we realize that we need common features / concepts such as</p>
+
+<ul>
+<li><code>Namespace</code> / <code>NamedElement</code> for naming elements</li>
+<li><code>Package</code> / <code>PackageableElement</code> for categorizing elements</li>
+<li>etc.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Removing Empty Directories]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2013/12/12/removing-empty-directories/"/>
+    <updated>2013-12-12T20:58:39+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2013/12/12/removing-empty-directories</id>
+    <content type="html"><![CDATA[<div><script src='https://gist.github.com/7934458.js'></script>
+<noscript><pre><code>find . -type d -empty -print0 | xargs -0 rm -rvf
+</code></pre></noscript></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Naming MQTT Topics]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2013/11/30/naming-mqtt-topics/"/>
+    <updated>2013-11-30T23:54:29+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2013/11/30/naming-mqtt-topics</id>
+    <content type="html"><![CDATA[<p>This post is an attempt to define a naming convention for MQTT topic that combines physical and location information.</p>
+
+<!--more-->
+
+
+
+
+<figure class='code'><figcaption><span>A kind of naming convention</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='antlr'><span class='line'><span class="nl">topic</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/&#39;</span><span class="w"> </span><span class="nv">class</span><span class="w"> </span><span class="s">&#39;/&#39;</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="s">&#39;/&#39;</span><span class="w"> </span><span class="nv">direction</span><span class="w"> </span><span class="s">&#39;/&#39;</span><span class="w"> </span><span class="nv">command</span><span class="w"> </span><span class="s">&#39;/&#39;</span><span class="w"> </span><span class="nv">declaringClass</span><span class="w"> </span><span class="s">&#39;/&#39;</span><span class="w"> </span><span class="nv">feature</span><span class="w"> </span><span class="o">(</span><span class="nv">qualifiedName</span><span class="o">)?</span><span class="p">;</span><span class="w"></span>
+</span><span class='line'><span class="nl">direction</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&#39;in&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s">&#39;out&#39;</span><span class="p">;</span><span class="w"></span>
+</span><span class='line'><span class="nl">command</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&#39;get&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s">&#39;set&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s">&#39;unset&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s">&#39;val&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s">&#39;op&#39;</span><span class="p">;</span><span class="w"></span>
+</span><span class='line'><span class="nl">qualifiedName</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">(</span><span class="w"> </span><span class="s">&#39;/&#39;</span><span class="w"> </span><span class="no">STRING</span><span class="w"> </span><span class="o">)+</span><span class="p">;</span><span class="w"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Where</p>
+
+<ul>
+<li><code>class</code>: the class of the device</li>
+<li><code>id</code>: the unique id of the device</li>
+<li><code>direction</code> indicates the direction of the message
+
+<ul>
+<li><code>'in'</code>: the message goes to the device</li>
+<li><code>'out'</code>: the message goes from the device</li>
+</ul>
+</li>
+<li><code>command</code>: the command to execute
+
+<ul>
+<li><code>'get'</code>: get the value of the feature</li>
+<li><code>'set'</code>: set the value of the feature</li>
+<li><code>'unset'</code>: unset the value of the feature</li>
+<li><code>'val'</code>: send the value of the feature</li>
+<li><code>'op'</code>: execute an operation on the device</li>
+</ul>
+</li>
+<li><code>declaringClass</code>: the class in which the feature is declared</li>
+<li><code>feature</code>: the feature (property or operation)</li>
+<li><code>qualifiedName</code>: the fully qualified name of the device</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Machine case</h3>
+
+<ul>
+<li>A <code>Machine</code> has a property <code>freeMemory</code></li>
+<li>A <code>JavaVirtualMachine</code> is a <code>Machine</code></li>
+<li>A <code>JavaVirtualMachine</code> has an operation called <code>gc</code> which runs the garbage collecor</li>
+<li><p>There is an instance of a <code>JavaVirtualMachine</code> with</p>
+
+<ul>
+<li>id is 42</li>
+<li>is deployed on a host called <code>myhost</code></li>
+<li>is running a web app called <code>mywebapp</code></li>
+<li>qualifiedName is <code>/myhost/mywebapp</code></li>
+</ul>
+</li>
+<li><p>The <code>JavaVirtualMachine</code> 42 would publish its free memory on topic
+  <code>/JavaVirtualMachine/42/out/val/Machine/freeMemory/myhost/mywebapp</code></p></li>
+<li>In order to receive operation call, the <code>JavaVirtualMachine</code> 42 would subscibe to topics
+
+<ul>
+<li><code>/JavaVirtualMachine/42/in/op/#</code>; if <code>id</code> is kind of UUID, it could only subscribe to <code>/+/42/in/#</code></li>
+<li>and to <code>/+/+/in/op/+/+/myhost/mywebapp</code></li>
+</ul>
+</li>
+<li>An application would subscribe to
+
+<ul>
+<li><code>/+/+/out/val/Machine/freeMemory/#</code> to receive <code>freeMemory</code> values from any instance of <code>Machine</code></li>
+<li><code>/JavaVirtualMachine/+/out/val/Machine/freeMemory/#</code> to receive <code>freeMemory</code> values from any instance of <code>JavaVirtualMachine</code></li>
+<li><code>/+/+/out/val/Machine/freeMemory/myhost/#</code> to receive <code>freeMemory</code> values from any instance deployed on <code>myhost</code></li>
+</ul>
+</li>
+<li>An application would publish to <code>/JavaVirtualMachine/42/in/op/JavaVirtualMachine/gc</code> to run the gc on JVM 42</li>
+</ul>
+
+
+<p>Not tested but it should work &hellip;</p>
+]]></content>
+  </entry>
+  
+</feed>

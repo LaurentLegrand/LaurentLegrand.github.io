@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>How I Organize Post Resources - My Blog</title>
+  <meta name="author" content="Laurent Legrand">
+
+  
+  <meta name="description" content="When a post uses additional resources (images, javascript, pdf), I put them
+in a directory with the same name as the post filename but without the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-46185019-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Blog</a></h1>
+  
+    <h2>...</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:laurentlegrand.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">How I Organize Post Resources</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-09T23:08:45+01:00" pubdate data-updated="true">Jan 9<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>When a post uses additional resources (images, javascript, pdf), I put them
+in a directory with the same name as the post filename but without the file extension.</p>
+
+<p>For instance, for the current post, <code>2014-01-09-how-i-organize-post-resources</code>, resources
+would be in the directory <code>resources/2014-01-09-how-i-organize-post-resources</code>.</p>
+
+<p>In order to <em>industrialize</em> the creation of the resource directory, I&rsquo;ve changed
+the <code>new_post</code> task in the <code>Rakefile</code> in order to</p>
+
+<ul>
+<li>create the resource directory</li>
+<li>add the variable <code>resources</code> in the <a href="http://jekyllrb.com/docs/frontmatter/">front-matter</a> of the new post</li>
+</ul>
+
+
+<p>At the end, in a post, I just have to use the variables <code>site_url</code> and <code>page.resources</code> to
+reference a resource.</p>
+
+<p>For instance, a link to the file <code>test.pdf</code> would be written <code>{{ root_url }}/{{ page.resources }}/test.pdf</code>.</p>
+
+<p>And would be rendered <code>/resources/2014-01-09-how-i-organize-post-resources/test.pdf</code>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Laurent Legrand</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-09T23:08:45+01:00" pubdate data-updated="true">Jan 9<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/octopress/'>octopress</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources/" data-via="" data-counturl="http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/01/07/music-scales-with-d3js/" title="Previous Post: Music Scales with d3.js">&laquo; Music Scales with d3.js</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/01/13/overriding-templates-with-xtend/" title="Next Post: Overriding Templates with XTend">Overriding Templates with XTend &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/02/octopress-on-raspberry-pi/">Octopress on Raspberry Pi</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/13/overriding-templates-with-xtend/">Overriding Templates With XTend</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/09/how-i-organize-post-resources/">How I Organize Post Resources</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/07/music-scales-with-d3js/">Music Scales With d3.js</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/05/a-bass-fretboard/">A Bass Fretboard</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/LaurentLegrand">@LaurentLegrand</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'LaurentLegrand',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Laurent Legrand -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'llegrand';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources/';
+        var disqus_url = 'http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>My Blog</title>
+  <title>Octopress on Raspberry Pi - My Blog</title>
   <meta name="author" content="Laurent Legrand">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://laurentlegrand.github.io">
+  <link rel="canonical" href="http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="My Blog" type="application/atom+xml">
@@ -75,15 +75,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/07/02/octopress-on-raspberry-pi/">Octopress on Raspberry Pi</a></h1>
+      <h1 class="entry-title">Octopress on Raspberry Pi</h1>
     
     
       <p class="meta">
@@ -106,7 +103,7 @@
   </header>
 
 
-  <div class="entry-content"><p>I <em>moved</em> my blog sources to a raspberry pi running Linux raspberrypi 3.10.25+</p>
+<div class="entry-content"><p>I <em>moved</em> my blog sources to a raspberry pi running Linux raspberrypi 3.10.25+</p>
 
 <p>I&rsquo;ve faced the following issues:</p>
 
@@ -125,69 +122,16 @@
 
 <p>The site generation is rather slow but it works!</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/13/overriding-templates-with-xtend/">Overriding Templates With XTend</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Laurent Legrand</span></span>
 
-<time datetime="2014-01-13T22:30:53+01:00" pubdate data-updated="true">Jan 13<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>On some project, I generate code from EMF models. And I&rsquo;ve been faced to the following issue:
-overriding a template for classes in different EMF meta-models which are in separated Eclipse plug-ins.</p>
-
-<p>It was similar to the following example: the template <code>Foo</code>
-which needs to be override for each class in that class hierarchy (colors correspond to different Eclipse plug-ins)</p>
-
-<p><img src="http://yuml.me/diagram/scruffy/class/[a.A{bg:blue}]^-[a.A_1{bg:blue}], [a.A]^-[a.A_2{bg:blue}], [a.A_1]^-[b.B{bg:orange}], [a.A_2]^-[c.C{bg:green}], [b.B]^-[b.B_1{bg:orange}], [b.B]^-[b.B_2{bg:orange}], [c.C]^-[c.C_1{bg:green}], [c.C]^-[c.C_2{bg:green}]"></img></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/01/13/overriding-templates-with-xtend/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/09/how-i-organize-post-resources/">How I Organize Post Resources</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -199,249 +143,38 @@ which needs to be override for each class in that class hierarchy (colors corres
   
 
 
-<time datetime="2014-01-09T23:08:45+01:00" pubdate data-updated="true">Jan 9<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>When a post uses additional resources (images, javascript, pdf), I put them
-in a directory with the same name as the post filename but without the file extension.</p>
-
-<p>For instance, for the current post, <code>2014-01-09-how-i-organize-post-resources</code>, resources
-would be in the directory <code>resources/2014-01-09-how-i-organize-post-resources</code>.</p>
-
-<p>In order to <em>industrialize</em> the creation of the resource directory, I&rsquo;ve changed
-the <code>new_post</code> task in the <code>Rakefile</code> in order to</p>
-
-<ul>
-<li>create the resource directory</li>
-<li>add the variable <code>resources</code> in the <a href="http://jekyllrb.com/docs/frontmatter/">front-matter</a> of the new post</li>
-</ul>
-
-
-<p>At the end, in a post, I just have to use the variables <code>site_url</code> and <code>page.resources</code> to
-reference a resource.</p>
-
-<p>For instance, a link to the file <code>test.pdf</code> would be written <code>{{ root_url }}/{{ page.resources }}/test.pdf</code>.</p>
-
-<p>And would be rendered <code>/resources/2014-01-09-how-i-organize-post-resources/test.pdf</code>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2014-07-02T21:36:07+02:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2014</time>
       
-  <header>
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/blog/2014/01/07/music-scales-with-d3js/">Music Scales With d3.js</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
+      <div class="sharing">
   
-
-
-<time datetime="2014-01-07T22:02:19+01:00" pubdate data-updated="true">Jan 7<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This post is a small example that uses <a href="http://d3js.org/">d3.js</a> to dynamically shows different music scales.</p>
-
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi/" data-via="" data-counturl="http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/01/07/music-scales-with-d3js/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/05/a-bass-fretboard/">A Bass Fretboard</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-05T10:49:46+01:00" pubdate data-updated="true">Jan 5<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>A bass fretboard for beginners.</p>
-
-<p><img class="center" src="/resources/2014-01-05-a-bass-fretboard/BassFretboard.png" title="Bass Fretboard" ></p>
-
-<p>A pdf version is available <a href="/resources/2014-01-05-a-bass-fretboard/BassFretboard.pdf" title="">here</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2014/01/13/overriding-templates-with-xtend/" title="Previous Post: Overriding Templates with XTend">&laquo; Overriding Templates with XTend</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/17/customizing-uml-with-xcore/">Customizing UML With XCore</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-17T22:00:30+01:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>With the latest version of <a href="http://wiki.eclipse.org/Xcore">XCore</a> (EMF 2.9.1 and XCore 1.0), it is now possible to easily customize the UML meta-model.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/12/17/customizing-uml-with-xcore/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/12/removing-empty-directories/">Removing Empty Directories</a></h1>
-    
-    
-      <p class="meta">
-        
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-12T20:58:39+01:00" pubdate data-updated="true">Dec 12<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div><script src='https://gist.github.com/7934458.js'></script>
-<noscript><pre><code>find . -type d -empty -print0 | xargs -0 rm -rvf
-</code></pre></noscript></div>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/30/naming-mqtt-topics/">Naming MQTT Topics</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-30T23:54:29+01:00" pubdate data-updated="true">Nov 30<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This post is an attempt to define a naming convention for MQTT topic that combines physical and location information.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/11/30/naming-mqtt-topics/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -474,7 +207,7 @@ reference a resource.</p>
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/LaurentLegrand">@LaurentLegrand</a> on GitHub
@@ -507,6 +240,7 @@ reference a resource.</p>
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -521,7 +255,10 @@ reference a resource.</p>
       var disqus_shortname = 'llegrand';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi/';
+        var disqus_url = 'http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

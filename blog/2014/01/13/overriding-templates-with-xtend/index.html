@@ -1,0 +1,612 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Overriding Templates With XTend - My Blog</title>
+  <meta name="author" content="Laurent Legrand">
+
+  
+  <meta name="description" content="On some project, I generate code from EMF models. And I&rsquo;ve been faced to the following issue:
+overriding a template for classes in different &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-46185019-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Blog</a></h1>
+  
+    <h2>...</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:laurentlegrand.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Overriding Templates With XTend</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-13T22:30:53+01:00" pubdate data-updated="true">Jan 13<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>On some project, I generate code from EMF models. And I&rsquo;ve been faced to the following issue:
+overriding a template for classes in different EMF meta-models which are in separated Eclipse plug-ins.</p>
+
+<p>It was similar to the following example: the template <code>Foo</code>
+which needs to be override for each class in that class hierarchy (colors correspond to different Eclipse plug-ins)</p>
+
+<p><img src="http://yuml.me/diagram/scruffy/class/[a.A{bg:blue}]^-[a.A_1{bg:blue}], [a.A]^-[a.A_2{bg:blue}], [a.A_1]^-[b.B{bg:orange}], [a.A_2]^-[c.C{bg:green}], [b.B]^-[b.B_1{bg:orange}], [b.B]^-[b.B_2{bg:orange}], [c.C]^-[c.C_1{bg:green}], [c.C]^-[c.C_2{bg:green}]"></img></p>
+
+<!--more-->
+
+
+<h2>First try: multiple dispatch</h2>
+
+<p>With Xtend, a classical approach is to use the multiple dispatch feature:</p>
+
+<figure class='code'><figcaption><span>Multiple Dispatch </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kd">class</span> <span class="nc">Foo</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">A</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;a.A&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">A_1</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;a.A_1&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="n">B</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;b.B&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo</span><span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="n">C</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;c.C&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// and so on</span>
+</span><span class='line'>  
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It works fine but all template specializations have to be declared in the same Xtend class. And it might not be possible.
+For instance, in the example, we would have created an additional Eclipse plug-in containing all templates.</p>
+
+<h2>Second try: Eclipse extension point / extensions</h2>
+
+<p>As I want to group template specializations per Eclipse plug-in, I looked at the extension point / extensions mechanism.</p>
+
+<p>For the example, I would have declared:</p>
+
+<ul>
+<li>an extension point for the root template declared in plug-in <code>a</code></li>
+<li>an extension for classes from package <code>b</code> declared in plug-in <code>b</code></li>
+<li>an extension for classes from package <code>c</code> declared in plug-in <code>c</code></li>
+</ul>
+
+
+<p>It would work but it is quite tedious: tons of XML and lots of plumbing code; not manageable if you have several templates to override.</p>
+
+<h2>Final try: a combination of lambda expression and multiple dispatch</h2>
+
+<p>Since the previous attempts have some drawbacks, I&rsquo;ve defined the following technique which combines lambda expressions and multiple dispatch
+with the help of two small classes.</p>
+
+<h3>First helper class: <code>Transformer</code></h3>
+
+<p>First, I have declare the class <code>Transformer</code> that transforms an object instance into another one:</p>
+
+<figure class='code'><figcaption><span>Transformer</span><a href='https://raw.github.com/LaurentLegrand/ollabaca-on/master/org.ollabaca.on.site/src/org/ollabaca/on/site/util/Transformer.xtend'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kd">class</span> <span class="nc">Transformer</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.SortedMap</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.TreeMap</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Transformer</span><span class="o">&lt;</span><span class="n">I</span><span class="o">,</span> <span class="n">O</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">val</span> <span class="o">(</span><span class="n">I</span><span class="o">)=&gt;</span><span class="n">O</span> <span class="n">fallback</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">val</span> <span class="n">SortedMap</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">I</span><span class="o">&gt;,</span> <span class="o">(</span><span class="n">I</span><span class="o">)=&gt;</span><span class="n">O</span><span class="o">&gt;</span> <span class="n">transformers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeMap</span><span class="o">(</span>
+</span><span class='line'>      <span class="o">[</span> <span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">I</span><span class="o">&gt;</span> <span class="n">a</span><span class="o">,</span> <span class="n">b</span> <span class="o">|</span> <span class="c1">// most specific class, first</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">b</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">return</span> <span class="mi">0</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">isAssignableFrom</span><span class="o">(</span><span class="n">b</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">return</span> <span class="mi">1</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>          <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span class='line'>      <span class="o">])</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">new</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="n">fallback</span> <span class="o">=</span> <span class="kc">null</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">new</span><span class="o">((</span><span class="n">I</span><span class="o">)=&gt;</span><span class="n">O</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="n">fallback</span> <span class="o">=</span> <span class="n">fallback</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">def</span> <span class="nf">register</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">I</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">,</span> <span class="o">(</span><span class="n">I</span><span class="o">)=&gt;</span><span class="n">O</span> <span class="n">transformer</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">transformers</span><span class="o">.</span><span class="n">put</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="n">transformer</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">def</span> <span class="n">O</span> <span class="nf">transform</span><span class="o">(</span><span class="n">I</span> <span class="n">self</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">for</span> <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">transformers</span><span class="o">.</span><span class="n">entrySet</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">isInstance</span><span class="o">(</span><span class="n">self</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>                  <span class="n">val</span> <span class="n">o</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">apply</span><span class="o">(</span><span class="n">self</span><span class="o">)</span>
+</span><span class='line'>                  <span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                      <span class="k">return</span> <span class="n">o</span>
+</span><span class='line'>                  <span class="o">}</span>
+</span><span class='line'>              <span class="o">}</span>
+</span><span class='line'>          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IllegalArgumentException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              <span class="n">ex</span><span class="o">.</span><span class="n">printStackTrace</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="n">self</span><span class="o">.</span><span class="n">doFallback</span>
+</span><span class='line'>      <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IllegalArgumentException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">ex</span><span class="o">.</span><span class="n">printStackTrace</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kc">null</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">protected</span> <span class="kd">def</span> <span class="n">O</span> <span class="nf">doFallback</span><span class="o">(</span><span class="n">I</span> <span class="n">self</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="n">fallback</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">apply</span><span class="o">(</span><span class="n">self</span><span class="o">)</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>It contains the following members:</p>
+
+<ul>
+<li><code>transfomers</code>: a map of lambda expressions to which a <code>Transformer</code> instance delegates the transformation</li>
+<li><code>fallback</code>: a fallback lambda expression if no transformer is found; <code>doFallback</code> could also be override instead</li>
+<li><code>register</code> an helper method used to register a transformer lambda expression;
+ the first parameter of that method corresponds to the root class that the lambda expression is able to transform</li>
+<li><code>transform</code>: the method that does the transformation</li>
+</ul>
+
+
+<h3>Second helper class: <code>Template</code></h3>
+
+<p>The second helper class is the class <code>Template</code> which specializes the class <code>Transformer</code> by trasforming into a <code>CharSequence</code>.</p>
+
+<figure class='code'><figcaption><span>Template</span><a href='https://raw.github.com/LaurentLegrand/ollabaca-on/master/org.ollabaca.on.site/src/org/ollabaca/on/site/util/Template.xtend'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kd">class</span> <span class="nc">Template</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="n">Transformer</span><span class="o">&lt;</span><span class="n">E</span><span class="o">,</span> <span class="n">CharSequence</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">new</span><span class="o">()</span> <span class="o">{</span> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="nf">new</span><span class="o">((</span><span class="n">E</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">CharSequence</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="kd">super</span><span class="o">(</span><span class="n">fallback</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Some conventions and that&rsquo;s it</h3>
+
+<p>Finally, when I need a template, I</p>
+
+<ul>
+<li>declare a singleton class which extends <code>Template</code></li>
+<li>declare dispatch <code>doFallback</code> methods for each class in the root package</li>
+<li>declare an helper method with this convention <code>&lt;template-name&gt;_&lt;root-class-name&gt;</code></li>
+</ul>
+
+
+<p>For instance, the template <code>Foo</code> would be:</p>
+
+<figure class='code'><figcaption><span>Foo </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kn">package</span> <span class="n">a</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Foo</span> <span class="kd">extends</span> <span class="n">Template</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="n">val</span> <span class="n">Foo</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Foo</span><span class="o">()</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// the helper method</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="nf">foo_A</span><span class="o">(</span><span class="n">A</span> <span class="n">self</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">instance</span><span class="o">.</span><span class="n">transform</span><span class="o">(</span><span class="n">self</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// the fallback methods</span>
+</span><span class='line'>  <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">doFallback</span><span class="o">(</span><span class="n">A</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;a.A&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">doFallback</span><span class="o">(</span><span class="n">A_1</span> <span class="n">e</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;a.A_1&#39;&#39;&#39;</span>
+</span><span class='line'>      
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then, if I need to override the default templates in another Eclipse plug-in, I</p>
+
+<ul>
+<li>declare a class with the same name as the helper class in the root template</li>
+<li>declare a <code>register</code> method that registers to the root template</li>
+<li>declare dispatch methods for each template to override; these methods must have the same signature than the <code>transform</code> method</li>
+</ul>
+
+
+<p>For instance, the extension of <code>Foo</code> in Eclipse plug-in <code>b</code> would be:</p>
+
+<figure class='code'><figcaption><span>Foo </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='xtend'><span class='line'><span class="kn">package</span> <span class="n">b</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Foo_A</span> <span class="o">{</span> <span class="c1">// no need to extend anything!</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="nf">register</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">a</span><span class="o">.</span><span class="nl">Foo:</span><span class="o">:</span><span class="n">instance</span><span class="o">.</span><span class="n">register</span><span class="o">(</span><span class="n">typeof</span><span class="o">(</span><span class="n">b</span><span class="o">),</span> <span class="o">[</span><span class="n">foo_A</span><span class="o">])</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// useless but mandatory</span>
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo_A</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="n">A</span> <span class="n">self</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo_A</span><span class="o">(</span><span class="n">B</span> <span class="n">self</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;b.B&#39;&#39;&#39;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">static</span> <span class="kd">def</span> <span class="n">dispatch</span> <span class="nf">foo_A</span><span class="o">(</span><span class="n">B_1</span> <span class="n">self</span><span class="o">)</span> <span class="s">&#39;&#39;&#39;b.B_1&#39;&#39;&#39;</span>
+</span><span class='line'>      
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Last words</h2>
+
+<p>With that technique, overriding templates is quite easy.
+The only constraint is to respect the signature of the lambda expression required by the <code>Transformer</code> class.
+Furthermore, you are free to organize your template extensions the way you want.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Laurent Legrand</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-13T22:30:53+01:00" pubdate data-updated="true">Jan 13<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend/" data-via="" data-counturl="http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/01/09/how-i-organize-post-resources/" title="Previous Post: How I Organize Post Resources">&laquo; How I Organize Post Resources</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/07/02/octopress-on-raspberry-pi/" title="Next Post: Octopress on Raspberry Pi">Octopress on Raspberry Pi &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/02/octopress-on-raspberry-pi/">Octopress on Raspberry Pi</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/13/overriding-templates-with-xtend/">Overriding Templates With XTend</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/09/how-i-organize-post-resources/">How I Organize Post Resources</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/07/music-scales-with-d3js/">Music Scales With d3.js</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/05/a-bass-fretboard/">A Bass Fretboard</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/LaurentLegrand">@LaurentLegrand</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'LaurentLegrand',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Laurent Legrand -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'llegrand';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend/';
+        var disqus_url = 'http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

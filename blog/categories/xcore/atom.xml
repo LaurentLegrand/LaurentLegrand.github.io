@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: XCore | My Blog]]></title>
+  <link href="http://laurentlegrand.github.io/blog/categories/xcore/atom.xml" rel="self"/>
+  <link href="http://laurentlegrand.github.io/"/>
+  <updated>2014-07-02T22:05:32+02:00</updated>
+  <id>http://laurentlegrand.github.io/</id>
+  <author>
+    <name><![CDATA[Laurent Legrand]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Customizing UML With XCore]]></title>
+    <link href="http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/"/>
+    <updated>2013-12-17T22:00:30+01:00</updated>
+    <id>http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore</id>
+    <content type="html"><![CDATA[<p>With the latest version of <a href="http://wiki.eclipse.org/Xcore">XCore</a> (EMF 2.9.1 and XCore 1.0), it is now possible to easily customize the UML meta-model.</p>
+
+<!--more-->
+
+
+<p>As shown in the code below, we just have to import classes from the UML meta-model and declare new classes that extend them.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>book.xcore <a href="https://github.com/LaurentLegrand/ollabaca-on/blob/master/org.ollabaca.on.uml/model/book.xcore">https://github.com/LaurentLegrand/ollabaca-on/blob/master/org.ollabaca.on.uml/model/book.xcore</a> </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.PackageableElement</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.Element</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.Node</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.ExecutionEnvironment</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">class</span> <span class="nc">BookElement</span> <span class="kd">extends</span> <span class="n">PackageableElement</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">refers</span> <span class="n">Element</span> <span class="n">documentation</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">class</span> <span class="nc">Book</span> <span class="kd">extends</span> <span class="n">BookElement</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">contains</span> <span class="n">Part</span><span class="o">[]</span> <span class="n">parts</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// &amp;hellip;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Why using this technique instead of UML Profile?</h2>
+
+<p>Even though the UML Profiles technique is qualified as <em>lightweight</em> in this
+<a href="http://www.eclipse.org/modeling/mdt/uml2/docs/articles/Customizing_UML2_Which_Technique_is_Right_For_You/article.html">article</a>,
+UML Profiles has some major drawbacks:</p>
+
+<ol>
+<li>Before modeling, the end-user has to understand the concepts in the UML meta-model and then the concepts declared in the UML Profile.</li>
+<li>During modeling, the end-user has to instantiate a UML meta-class and then to apply a stereotype on that instance; quite tedious process and not very intuitive.</li>
+<li>It is even worse for the one that defines the UML Profile and develops tools based on it:
+he has to jump between stereotypes and UML meta-classes, he cannot get a consistent view on stereotyped instances.</li>
+</ol>
+
+
+<p>We don&rsquo;t have these drawbacks with the XCore technique. But it introduces other issues / limitations:</p>
+
+<ul>
+<li>It is probably not compatible with UML drawing tools.</li>
+<li>The implementation classes generated by EMF extend UML implementation classes which are <em>private</em> in the UML bundle; it is just a warning but it works.</li>
+</ul>
+
+
+<h2>Why Keep UML?</h2>
+
+<p>Often, when we start modeling a DSL, we don&rsquo;t think that you need UML;
+it is rather the opposite: we want to get rid of UML.
+But on the long run, when the DSL evolves, we realize that we need common features / concepts such as</p>
+
+<ul>
+<li><code>Namespace</code> / <code>NamedElement</code> for naming elements</li>
+<li><code>Package</code> / <code>PackageableElement</code> for categorizing elements</li>
+<li>etc.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

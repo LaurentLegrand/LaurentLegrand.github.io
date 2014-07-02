@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Customizing UML With XCore - My Blog</title>
+  <meta name="author" content="Laurent Legrand">
+
+  
+  <meta name="description" content="With the latest version of XCore (EMF 2.9.1 and XCore 1.0), it is now possible to easily customize the UML meta-model. As shown in the code below, we &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-46185019-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Blog</a></h1>
+  
+    <h2>...</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:laurentlegrand.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Customizing UML With XCore</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-17T22:00:30+01:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>With the latest version of <a href="http://wiki.eclipse.org/Xcore">XCore</a> (EMF 2.9.1 and XCore 1.0), it is now possible to easily customize the UML meta-model.</p>
+
+<!--more-->
+
+
+<p>As shown in the code below, we just have to import classes from the UML meta-model and declare new classes that extend them.</p>
+
+<figure class='code'><figcaption><span>book.xcore</span><a href='https://github.com/LaurentLegrand/ollabaca-on/blob/master/org.ollabaca.on.uml/model/book.xcore'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.PackageableElement</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.Element</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.Node</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.eclipse.uml2.uml.ExecutionEnvironment</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">BookElement</span> <span class="kd">extends</span> <span class="n">PackageableElement</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">refers</span> <span class="n">Element</span> <span class="n">documentation</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">Book</span> <span class="kd">extends</span> <span class="n">BookElement</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">contains</span> <span class="n">Part</span><span class="o">[]</span> <span class="n">parts</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// ...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Why using this technique instead of UML Profile?</h2>
+
+<p>Even though the UML Profiles technique is qualified as <em>lightweight</em> in this
+<a href="http://www.eclipse.org/modeling/mdt/uml2/docs/articles/Customizing_UML2_Which_Technique_is_Right_For_You/article.html">article</a>,
+UML Profiles has some major drawbacks:</p>
+
+<ol>
+<li>Before modeling, the end-user has to understand the concepts in the UML meta-model and then the concepts declared in the UML Profile.</li>
+<li>During modeling, the end-user has to instantiate a UML meta-class and then to apply a stereotype on that instance; quite tedious process and not very intuitive.</li>
+<li>It is even worse for the one that defines the UML Profile and develops tools based on it:
+he has to jump between stereotypes and UML meta-classes, he cannot get a consistent view on stereotyped instances.</li>
+</ol>
+
+
+<p>We don&rsquo;t have these drawbacks with the XCore technique. But it introduces other issues / limitations:</p>
+
+<ul>
+<li>It is probably not compatible with UML drawing tools.</li>
+<li>The implementation classes generated by EMF extend UML implementation classes which are <em>private</em> in the UML bundle; it is just a warning but it works.</li>
+</ul>
+
+
+<h2>Why Keep UML?</h2>
+
+<p>Often, when we start modeling a DSL, we don&rsquo;t think that you need UML;
+it is rather the opposite: we want to get rid of UML.
+But on the long run, when the DSL evolves, we realize that we need common features / concepts such as</p>
+
+<ul>
+<li><code>Namespace</code> / <code>NamedElement</code> for naming elements</li>
+<li><code>Package</code> / <code>PackageableElement</code> for categorizing elements</li>
+<li>etc.</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Laurent Legrand</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-17T22:00:30+01:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/uml/'>UML</a>, <a class='category' href='/blog/categories/xcore/'>XCore</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/" data-via="" data-counturl="http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/12/12/removing-empty-directories/" title="Previous Post: Removing Empty Directories">&laquo; Removing Empty Directories</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/01/05/a-bass-fretboard/" title="Next Post: A Bass Fretboard">A Bass Fretboard &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/02/octopress-on-raspberry-pi/">Octopress on Raspberry Pi</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/13/overriding-templates-with-xtend/">Overriding Templates With XTend</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/09/how-i-organize-post-resources/">How I Organize Post Resources</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/07/music-scales-with-d3js/">Music Scales With d3.js</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/05/a-bass-fretboard/">A Bass Fretboard</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/LaurentLegrand">@LaurentLegrand</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'LaurentLegrand',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Laurent Legrand -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'llegrand';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/';
+        var disqus_url = 'http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
