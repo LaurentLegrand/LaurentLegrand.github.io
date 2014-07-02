@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: D3js | My Blog]]></title>
-  <link href="http://laurentlegrand.github.io/blog/categories/d3js/atom.xml" rel="self"/>
-  <link href="http://laurentlegrand.github.io/"/>
-  <updated>2014-07-02T22:05:32+02:00</updated>
-  <id>http://laurentlegrand.github.io/</id>
+  <link href="http://LaurentLegrand.github.io/blog/categories/d3js/atom.xml" rel="self"/>
+  <link href="http://LaurentLegrand.github.io/"/>
+  <updated>2014-07-02T22:16:03+02:00</updated>
+  <id>http://LaurentLegrand.github.io/</id>
   <author>
     <name><![CDATA[Laurent Legrand]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Music Scales With d3.js]]></title>
-    <link href="http://laurentlegrand.github.io/blog/2014/01/07/music-scales-with-d3js/"/>
+    <link href="http://LaurentLegrand.github.io/blog/2014/01/07/music-scales-with-d3js/"/>
     <updated>2014-01-07T22:02:19+01:00</updated>
-    <id>http://laurentlegrand.github.io/blog/2014/01/07/music-scales-with-d3js</id>
+    <id>http://LaurentLegrand.github.io/blog/2014/01/07/music-scales-with-d3js</id>
     <content type="html"><![CDATA[<p>This post is a small example that uses <a href="http://d3js.org/">d3.js</a> to dynamically shows different music scales.</p>
 
 <!--more-->

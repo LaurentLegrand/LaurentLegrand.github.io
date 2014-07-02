@@ -1,49 +1,49 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://laurentlegrand.github.io/blog/2013/11/30/naming-mqtt-topics/</loc>
+        <loc>http://LaurentLegrand.github.io/blog/2013/11/30/naming-mqtt-topics/</loc>
         <lastmod>2014-07-02T19:15:56+02:00</lastmod>
     </url>
     <url>
-        <loc>http://laurentlegrand.github.io/blog/2013/12/12/removing-empty-directories/</loc>
+        <loc>http://LaurentLegrand.github.io/blog/2013/12/12/removing-empty-directories/</loc>
         <lastmod>2014-07-02T19:15:56+02:00</lastmod>
     </url>
     <url>
-        <loc>http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/</loc>
+        <loc>http://LaurentLegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/</loc>
         <lastmod>2014-07-02T19:15:56+02:00</lastmod>
     </url>
     <url>
-        <loc>http://laurentlegrand.github.io/blog/2014/01/05/a-bass-fretboard/</loc>
+        <loc>http://LaurentLegrand.github.io/blog/2014/01/05/a-bass-fretboard/</loc>
         <lastmod>2014-07-02T19:15:56+02:00</lastmod>
     </url>
     <url>
-        <loc>http://laurentlegrand.github.io/blog/2014/01/07/music-scales-with-d3js/</loc>
+        <loc>http://LaurentLegrand.github.io/blog/2014/01/07/music-scales-with-d3js/</loc>
         <lastmod>2014-07-02T19:15:56+02:00</lastmod>
     </url>
     <url>
-        <loc>http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources/</loc>
+        <loc>http://LaurentLegrand.github.io/blog/2014/01/09/how-i-organize-post-resources/</loc>
         <lastmod>2014-07-02T19:15:56+02:00</lastmod>
     </url>
     <url>
         <loc>
-            http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend/
+            http://LaurentLegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend/
         </loc>
         <lastmod>2014-07-02T19:15:56+02:00</lastmod>
     </url>
     <url>
-        <loc>http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi/</loc>
-        <lastmod>2014-07-02T22:02:04+02:00</lastmod>
+        <loc>http://LaurentLegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi/</loc>
+        <lastmod>2014-07-02T22:12:53+02:00</lastmod>
     </url>
     <url>
-        <loc>http://laurentlegrand.github.io/</loc>
-        <lastmod>2014-07-02T22:02:04+02:00</lastmod>
+        <loc>http://LaurentLegrand.github.io/</loc>
+        <lastmod>2014-07-02T22:12:53+02:00</lastmod>
     </url>
     <url>
-        <loc>http://laurentlegrand.github.io/robots.txt</loc>
+        <loc>http://LaurentLegrand.github.io/robots.txt</loc>
         <lastmod>2014-07-02T19:15:56+02:00</lastmod>
     </url>
     <url>
-        <loc>http://laurentlegrand.github.io/blog/archives/</loc>
-        <lastmod>2014-07-02T22:02:04+02:00</lastmod>
+        <loc>http://LaurentLegrand.github.io/blog/archives/</loc>
+        <lastmod>2014-07-02T22:12:53+02:00</lastmod>
     </url>
 </urlset>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[My Blog]]></title>
-  <link href="http://laurentlegrand.github.io/atom.xml" rel="self"/>
-  <link href="http://laurentlegrand.github.io/"/>
-  <updated>2014-07-02T22:05:32+02:00</updated>
-  <id>http://laurentlegrand.github.io/</id>
+  <link href="http://LaurentLegrand.github.io/atom.xml" rel="self"/>
+  <link href="http://LaurentLegrand.github.io/"/>
+  <updated>2014-07-02T22:16:03+02:00</updated>
+  <id>http://LaurentLegrand.github.io/</id>
   <author>
     <name><![CDATA[Laurent Legrand]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Octopress on Raspberry Pi]]></title>
-    <link href="http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi/"/>
+    <link href="http://LaurentLegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi/"/>
     <updated>2014-07-02T21:36:07+02:00</updated>
-    <id>http://laurentlegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi</id>
+    <id>http://LaurentLegrand.github.io/blog/2014/07/02/octopress-on-raspberry-pi</id>
     <content type="html"><![CDATA[<p>I <em>moved</em> my blog sources to a raspberry pi running Linux raspberrypi 3.10.25+</p>
 
 <p>I&rsquo;ve faced the following issues:</p>
@@ -36,14 +36,17 @@
 
 
 <p>The site generation is rather slow but it works!</p>
+
+<p>Last problem during <code>rake deploy</code> !
+Solved by <a href="http://stackoverflow.com/a/18037705">http://stackoverflow.com/a/18037705</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Overriding Templates With XTend]]></title>
-    <link href="http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend/"/>
+    <link href="http://LaurentLegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend/"/>
     <updated>2014-01-13T22:30:53+01:00</updated>
-    <id>http://laurentlegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend</id>
+    <id>http://LaurentLegrand.github.io/blog/2014/01/13/overriding-templates-with-xtend</id>
     <content type="html"><![CDATA[<p>On some project, I generate code from EMF models. And I&rsquo;ve been faced to the following issue:
 overriding a template for classes in different EMF meta-models which are in separated Eclipse plug-ins.</p>
 
@@ -385,9 +388,9 @@ Furthermore, you are free to organize your template extensions the way you want.
   
   <entry>
     <title type="html"><![CDATA[How I Organize Post Resources]]></title>
-    <link href="http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources/"/>
+    <link href="http://LaurentLegrand.github.io/blog/2014/01/09/how-i-organize-post-resources/"/>
     <updated>2014-01-09T23:08:45+01:00</updated>
-    <id>http://laurentlegrand.github.io/blog/2014/01/09/how-i-organize-post-resources</id>
+    <id>http://LaurentLegrand.github.io/blog/2014/01/09/how-i-organize-post-resources</id>
     <content type="html"><![CDATA[<p>When a post uses additional resources (images, javascript, pdf), I put them
 in a directory with the same name as the post filename but without the file extension.</p>
 
@@ -414,9 +417,9 @@ reference a resource.</p>
   
   <entry>
     <title type="html"><![CDATA[Music Scales With d3.js]]></title>
-    <link href="http://laurentlegrand.github.io/blog/2014/01/07/music-scales-with-d3js/"/>
+    <link href="http://LaurentLegrand.github.io/blog/2014/01/07/music-scales-with-d3js/"/>
     <updated>2014-01-07T22:02:19+01:00</updated>
-    <id>http://laurentlegrand.github.io/blog/2014/01/07/music-scales-with-d3js</id>
+    <id>http://LaurentLegrand.github.io/blog/2014/01/07/music-scales-with-d3js</id>
     <content type="html"><![CDATA[<p>This post is a small example that uses <a href="http://d3js.org/">d3.js</a> to dynamically shows different music scales.</p>
 
 <!--more-->
@@ -424,7 +427,7 @@ reference a resource.</p>
 
 <p>The following buttons allow you to switch from a music scale to the other and to rotate the notes.</p>
 
-<p><link rel="stylesheet" type="text/css" href="http://laurentlegrand.github.io/resources/2014-01-07-music-scales-with-d3js/style.css"></p>
+<p><link rel="stylesheet" type="text/css" href="http://LaurentLegrand.github.io/resources/2014-01-07-music-scales-with-d3js/style.css"></p>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
@@ -442,7 +445,7 @@ reference a resource.</p>
 
 
 
-<script type="text/javascript" src="http://laurentlegrand.github.io/resources/2014-01-07-music-scales-with-d3js/scales.js"></script>
+<script type="text/javascript" src="http://LaurentLegrand.github.io/resources/2014-01-07-music-scales-with-d3js/scales.js"></script>
 
 
 <h2>Some words about the implementation</h2>
@@ -536,22 +539,22 @@ reference a resource.</p>
   
   <entry>
     <title type="html"><![CDATA[A Bass Fretboard]]></title>
-    <link href="http://laurentlegrand.github.io/blog/2014/01/05/a-bass-fretboard/"/>
+    <link href="http://LaurentLegrand.github.io/blog/2014/01/05/a-bass-fretboard/"/>
     <updated>2014-01-05T10:49:46+01:00</updated>
-    <id>http://laurentlegrand.github.io/blog/2014/01/05/a-bass-fretboard</id>
+    <id>http://LaurentLegrand.github.io/blog/2014/01/05/a-bass-fretboard</id>
     <content type="html"><![CDATA[<p>A bass fretboard for beginners.</p>
 
-<p><img class="center" src="http://laurentlegrand.github.io/resources/2014-01-05-a-bass-fretboard/BassFretboard.png" title="Bass Fretboard" ></p>
+<p><img class="center" src="http://LaurentLegrand.github.io/resources/2014-01-05-a-bass-fretboard/BassFretboard.png" title="Bass Fretboard" ></p>
 
-<p>A pdf version is available <a href="http://laurentlegrand.github.io/resources/2014-01-05-a-bass-fretboard/BassFretboard.pdf" title="">here</a>.</p>
+<p>A pdf version is available <a href="http://LaurentLegrand.github.io/resources/2014-01-05-a-bass-fretboard/BassFretboard.pdf" title="">here</a>.</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Customizing UML With XCore]]></title>
-    <link href="http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/"/>
+    <link href="http://LaurentLegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore/"/>
     <updated>2013-12-17T22:00:30+01:00</updated>
-    <id>http://laurentlegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore</id>
+    <id>http://LaurentLegrand.github.io/blog/2013/12/17/customizing-uml-with-xcore</id>
     <content type="html"><![CDATA[<p>With the latest version of <a href="http://wiki.eclipse.org/Xcore">XCore</a> (EMF 2.9.1 and XCore 1.0), it is now possible to easily customize the UML meta-model.</p>
 
 <!--more-->
@@ -633,9 +636,9 @@ But on the long run, when the DSL evolves, we realize that we need common featur
   
   <entry>
     <title type="html"><![CDATA[Removing Empty Directories]]></title>
-    <link href="http://laurentlegrand.github.io/blog/2013/12/12/removing-empty-directories/"/>
+    <link href="http://LaurentLegrand.github.io/blog/2013/12/12/removing-empty-directories/"/>
     <updated>2013-12-12T20:58:39+01:00</updated>
-    <id>http://laurentlegrand.github.io/blog/2013/12/12/removing-empty-directories</id>
+    <id>http://LaurentLegrand.github.io/blog/2013/12/12/removing-empty-directories</id>
     <content type="html"><![CDATA[<div><script src='https://gist.github.com/7934458.js'></script>
 <noscript><pre><code>find . -type d -empty -print0 | xargs -0 rm -rvf
 </code></pre></noscript></div>
@@ -645,9 +648,9 @@ But on the long run, when the DSL evolves, we realize that we need common featur
   
   <entry>
     <title type="html"><![CDATA[Naming MQTT Topics]]></title>
-    <link href="http://laurentlegrand.github.io/blog/2013/11/30/naming-mqtt-topics/"/>
+    <link href="http://LaurentLegrand.github.io/blog/2013/11/30/naming-mqtt-topics/"/>
     <updated>2013-11-30T23:54:29+01:00</updated>
-    <id>http://laurentlegrand.github.io/blog/2013/11/30/naming-mqtt-topics</id>
+    <id>http://LaurentLegrand.github.io/blog/2013/11/30/naming-mqtt-topics</id>
     <content type="html"><![CDATA[<p>This post is an attempt to define a naming convention for MQTT topic that combines physical and location information.</p>
 
 <!--more-->
