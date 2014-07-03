@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Bass - My Blog</title>
+  <title>Ma Gestion Des Photos Et Videos - My Blog</title>
   <meta name="author" content="Laurent Legrand">
 
   
-  <meta name="description" content="Category: bass">
+  <meta name="description" content="Stockage Sur le disque, je stocke mes photos / videos comme ceci : media: répertoire racine masters: répertoire contenant les fichiers bruts, copi� &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://LaurentLegrand.github.ioblog/categories/bass">
+  <link rel="canonical" href="http://LaurentLegrand.github.io/blog/2014/07/03/ma-gestion-des-photos">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="My Blog" type="application/atom+xml">
@@ -76,36 +76,139 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Bass</h1>
+    
+      <h1 class="entry-title">Ma Gestion Des Photos Et Videos</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-03T21:24:19+02:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2014</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><h1>Stockage</h1>
 
-  
-  <h2>2014</h2>
+<p>Sur le disque, je stocke mes photos / videos comme ceci :</p>
 
-<article>
-  
-<h1><a href="/blog/2014/01/05/a-bass-fretboard/">A Bass Fretboard</a></h1>
-<time datetime="2014-01-05T10:49:46+01:00" pubdate><span class='month'>Jan</span> <span class='day'>05</span> <span class='year'>2014</span></time>
+<ul>
+<li><code>media</code>: répertoire racine
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/bass/'>bass</a>, <a class='category' href='/blog/categories/music/'>music</a></span>
-</footer>
+<ul>
+<li><code>masters</code>: répertoire contenant les fichiers bruts, copiés des cartes SD des appareils</li>
+<li><code>photos</code>: répertoire contenant les photos JPG converties à partir des RAW dans <code>masters</code></li>
+<li><code>videos</code>: répertoire contenant les vidéos copiées de <code>masters</code></li>
+</ul>
+</li>
+</ul>
 
 
-</article>
+<p>Dans les sous répertoires <code>masters</code>, <code>photos</code> et <code>videos</code>, les fichiers sont organisés par date de
+prise de vue : <code>&lt;annee&gt;/&lt;mois&gt;/&lt;annee&gt;-&lt;mois&gt;-&lt;jour&gt;</code>.</p>
 
+<h1>Workflow</h1>
+
+<p>Les étapes principales de mon <em>workflow</em> sont :</p>
+
+<ul>
+<li>Prise de vue en RAW</li>
+<li>Copie des fichiers de la carte SD de l&#8217;appareil dans le répertoire <code>media/masters</code></li>
+<li>Post-traitement avec <a href="http://rawtherapee.com/">RawTherapee</a></li>
+<li>Conversion des RAW en JPEG et sortie vers <code>photos</code> en utilisant <a href="http://rawtherapee.com/">RawTherapee</a> en mode ligne de commande</li>
+<li>Copie des vidéos vers <code>video</code></li>
+<li>Partage des photos JPEG avec <a href="http://picasa.google.com/">Picasa</a></li>
+<li>Sauvegarde de l&#8217;ensemble des fichiers sur un NAS</li>
+</ul>
+
+
+<h1>Outils</h1>
+
+<p>J&#8217;utilise les outils suivants :</p>
+
+<ul>
+<li><a href="http://rawtherapee.com/">RawTherapee</a> pour le post-traitement des RAW</li>
+<li><a href="http://picasa.google.com/">Picasa</a> pour la création d&#8217;albums et le partage de ces albums</li>
+<li><a href="http://www.sno.phy.queensu.ca/~phil/exiftool/">ExifTool</a> pour l&#8217;extraction
+de la date de prise de vue; fonctionne aussi avec les vidéos</li>
+<li><a href="http://rsync.samba.org/">Rsync</a> pour la sauvegarde sur le NAS</li>
+<li><a href="http://www.bittorrent.com/sync/">BitTorrent Sync</a> en cours d&#8217;expérimentation pour remplacer <code>rsync</code></li>
+</ul>
+
+
+<p>Et un outil maison pour automatiser la plupart des tâches&hellip;</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Laurent Legrand</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-03T21:24:19+02:00" pubdate data-updated="true">Jul 3<span>rd</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/photo/'>photo</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://LaurentLegrand.github.io/blog/2014/07/03/ma-gestion-des-photos/" data-via="" data-counturl="http://LaurentLegrand.github.io/blog/2014/07/03/ma-gestion-des-photos/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/02/octopress-on-raspberry-pi/" title="Previous Post: Octopress on Raspberry Pi">&laquo; Octopress on Raspberry Pi</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -189,7 +292,10 @@
       var disqus_shortname = 'llegrand';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://LaurentLegrand.github.io/blog/2014/07/03/ma-gestion-des-photos/';
+        var disqus_url = 'http://LaurentLegrand.github.io/blog/2014/07/03/ma-gestion-des-photos/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

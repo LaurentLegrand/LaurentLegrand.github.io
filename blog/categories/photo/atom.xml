@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Photo | My Blog]]></title>
+  <link href="http://LaurentLegrand.github.io/blog/categories/photo/atom.xml" rel="self"/>
+  <link href="http://LaurentLegrand.github.io/"/>
+  <updated>2014-07-03T22:45:45+02:00</updated>
+  <id>http://LaurentLegrand.github.io/</id>
+  <author>
+    <name><![CDATA[Laurent Legrand]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ma Gestion Des Photos Et Videos]]></title>
+    <link href="http://LaurentLegrand.github.io/blog/2014/07/03/ma-gestion-des-photos/"/>
+    <updated>2014-07-03T21:24:19+02:00</updated>
+    <id>http://LaurentLegrand.github.io/blog/2014/07/03/ma-gestion-des-photos</id>
+    <content type="html"><![CDATA[<h1>Stockage</h1>
+
+<p>Sur le disque, je stocke mes photos / videos comme ceci :</p>
+
+<ul>
+<li><code>media</code>: répertoire racine
+
+<ul>
+<li><code>masters</code>: répertoire contenant les fichiers bruts, copiés des cartes SD des appareils</li>
+<li><code>photos</code>: répertoire contenant les photos JPG converties à partir des RAW dans <code>masters</code></li>
+<li><code>videos</code>: répertoire contenant les vidéos copiées de <code>masters</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Dans les sous répertoires <code>masters</code>, <code>photos</code> et <code>videos</code>, les fichiers sont organisés par date de
+prise de vue : <code>&lt;annee&gt;/&lt;mois&gt;/&lt;annee&gt;-&lt;mois&gt;-&lt;jour&gt;</code>.</p>
+
+<h1>Workflow</h1>
+
+<p>Les étapes principales de mon <em>workflow</em> sont :</p>
+
+<ul>
+<li>Prise de vue en RAW</li>
+<li>Copie des fichiers de la carte SD de l'appareil dans le répertoire <code>media/masters</code></li>
+<li>Post-traitement avec <a href="http://rawtherapee.com/">RawTherapee</a></li>
+<li>Conversion des RAW en JPEG et sortie vers <code>photos</code> en utilisant <a href="http://rawtherapee.com/">RawTherapee</a> en mode ligne de commande</li>
+<li>Copie des vidéos vers <code>video</code></li>
+<li>Partage des photos JPEG avec <a href="http://picasa.google.com/">Picasa</a></li>
+<li>Sauvegarde de l'ensemble des fichiers sur un NAS</li>
+</ul>
+
+
+<h1>Outils</h1>
+
+<p>J'utilise les outils suivants :</p>
+
+<ul>
+<li><a href="http://rawtherapee.com/">RawTherapee</a> pour le post-traitement des RAW</li>
+<li><a href="http://picasa.google.com/">Picasa</a> pour la création d'albums et le partage de ces albums</li>
+<li><a href="http://www.sno.phy.queensu.ca/~phil/exiftool/">ExifTool</a> pour l'extraction
+de la date de prise de vue; fonctionne aussi avec les vidéos</li>
+<li><a href="http://rsync.samba.org/">Rsync</a> pour la sauvegarde sur le NAS</li>
+<li><a href="http://www.bittorrent.com/sync/">BitTorrent Sync</a> en cours d'expérimentation pour remplacer <code>rsync</code></li>
+</ul>
+
+
+<p>Et un outil maison pour automatiser la plupart des tâches&hellip;</p>
+]]></content>
+  </entry>
+  
+</feed>
